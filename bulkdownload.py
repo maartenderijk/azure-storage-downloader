@@ -1,5 +1,3 @@
-# download_blobs.py
-# Python program to bulk download blob files from azure storage
 # Uses latest python SDK() for Azure blob storage
 # Requires python 3.6 or above
 import os
@@ -33,6 +31,7 @@ class AzureBlobFileDownloader:
     for blob in my_blobs:
 
       bytes = self.my_container.get_blob_client(blob).download_blob().readall()
+      # Skip blob if the file has no content (= directory)
       if len(bytes) == 0:
         pass
       else:
