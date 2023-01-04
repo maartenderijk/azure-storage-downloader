@@ -11,7 +11,6 @@ class AzureBlobFileDownloader:
     self.my_container = self.blob_service_client.get_container_client(container_name)
     self.path = local_path
 
-
   def save_blob(self,file_name,file_content):
     # Get full path to the file
     download_file_path = os.path.join(self.path, file_name)
@@ -21,10 +20,6 @@ class AzureBlobFileDownloader:
 
     with open(download_file_path, "wb") as file:
       file.write(file_content)
-
-  def make_dirs(self, path_name):
-    download_file_path = os.path.join(self.path, path_name)
-    os.makedirs(os.path.dirname(download_file_path), exist_ok=True)
 
   def download_all_blobs_in_container(self):
     my_blobs = self.my_container.list_blobs()
