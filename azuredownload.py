@@ -1,16 +1,19 @@
 from azure.storage.blob import BlobServiceClient
+from bulkdownload import AzureBlobFileDownloader
+from os import path
 
-connect_str = "DefaultEndpointsProtocol=https;AccountName=dlsfunctionbesafedevtest;AccountKey=gYdsUWqHLkf4fim4IRnr9bKNUQNZd9QGvrbfeYdcxPf13UjCAkQ985c2IvkDMUlXsPPKy0uFuGHlrufq/9gZJg==;EndpointSuffix=core.windows.net"
+connect_str = ""
 
-try:
-    blob_service_client = BlobServiceClient.from_connection_string(connect_str)
-    container_list = blob_service_client.list_containers()
+blob_service_client = BlobServiceClient.from_connection_string(connect_str)
+container_list = blob_service_client.list_containers()
 
-    for container in container_list:
-        container_client = blob_service_client.get_container_client(container.name)
+for container in container_list:
+    try:
         print(container.name)
+        azure_blob_file_downloader = AzureBlobFileDownloader(connect_str, container.name, path.join("export", container.name))
+        azure_blob_file_downloader.download_all_blobs_in_container()
+
+    except Exception as e:
+        print(e)
 
 
-except Exception as ex:
-    print('Exception:')
-    print(ex)
