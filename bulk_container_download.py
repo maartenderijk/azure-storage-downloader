@@ -1,5 +1,5 @@
 from azure.storage.blob import BlobServiceClient
-from bulkdownload import AzureBlobFileDownloader
+from blob_download import AzureBlobFileDownloader
 from os import path
 
 connect_str = ""
