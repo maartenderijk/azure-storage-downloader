@@ -7,7 +7,7 @@ from azure.storage.blob import BlobServiceClient, ContainerClient
 class AzureBlobFileDownloader:
   def __init__(self, connection_string: str, container_name: str, local_path: str):
     # Initialize the connection to Azure storage account
-    self.blob_service_client =  BlobServiceClient.from_connection_string(connection_string)
+    self.blob_service_client: BlobServiceClient = BlobServiceClient.from_connection_string(connection_string)
     self.my_container: ContainerClient = self.blob_service_client.get_container_client(container_name)
     self.path = local_path
 
@@ -26,6 +26,7 @@ class AzureBlobFileDownloader:
     for blob in my_blobs:
 
       bytes = self.my_container.get_blob_client(blob).download_blob().readall()
+
       # Skip blob if the file has no content (= directory)
       if len(bytes) == 0:
         pass
