@@ -1,17 +1,17 @@
 # Uses latest python SDK() for Azure blob storage
 # Requires python 3.6 or above
 import os
-from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import BlobServiceClient, ContainerClient
 
 
 class AzureBlobFileDownloader:
-  def __init__(self, connection_string, container_name, local_path):
+  def __init__(self, connection_string: str, container_name: str, local_path: str):
     # Initialize the connection to Azure storage account
     self.blob_service_client =  BlobServiceClient.from_connection_string(connection_string)
-    self.my_container = self.blob_service_client.get_container_client(container_name)
+    self.my_container: ContainerClient = self.blob_service_client.get_container_client(container_name)
     self.path = local_path
 
-  def save_blob(self,file_name,file_content):
+  def save_blob(self, file_name: str, file_content: bytes):
     # Get full path to the file
     download_file_path = os.path.join(self.path, file_name)
 
@@ -30,7 +30,7 @@ class AzureBlobFileDownloader:
       if len(bytes) == 0:
         pass
       else:
-        self.save_blob(blob.name, bytes)
+        self.save_blob(blob.name, bytes)  # type: ignore
 
 # Initialize class and upload files
 if __name__ == '__main__':
